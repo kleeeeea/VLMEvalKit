@@ -298,6 +298,7 @@ class ImageMCQDataset(ImageBaseDataset):
         else:
             data = mcq_vanilla_eval(model, data, meta, nproc, result_file, self.dataset_name)
 
+
         # load split
         eval_record = get_intermediate_file_path(eval_file, f'_{name_str}_result')
         dump(data, eval_record)

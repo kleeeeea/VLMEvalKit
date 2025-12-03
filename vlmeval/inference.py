@@ -81,6 +81,9 @@ def infer_data_api(model, work_dir, model_name, dataset, index_set=None, api_npr
 
 
 def infer_data(model, model_name, work_dir, dataset, out_file, verbose=False, api_nproc=4, use_vllm=False):
+    import importlib
+    if (importlib.import_module('socket').gethostname().startswith('dev') or 'mac' in importlib.import_module('socket').gethostname().lower()) and importlib.import_module('os').environ.get('LOCAL_RANK', '0') == '0': importlib.import_module('sys').path.append(importlib.import_module('os.path').expandvars('$HOME/klee_code/'));  import python_code.borrowed_klee_python_code.pdb; python_code.borrowed_klee_python_code.pdb.set_trace()
+
     dataset_name = dataset.dataset_name
     prev_file = f'{work_dir}/{model_name}_{dataset_name}_PREV.pkl'
     res = load(prev_file) if osp.exists(prev_file) else {}
@@ -202,6 +205,7 @@ def infer_data_job(
 
     tmpl = osp.join(work_dir, '{}' + f'{world_size}_{dataset_name}.pkl')
     out_file = tmpl.format(rank)
+
 
     model = infer_data(
         model=model, work_dir=work_dir, model_name=model_name, dataset=dataset,

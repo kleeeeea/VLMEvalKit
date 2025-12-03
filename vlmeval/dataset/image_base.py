@@ -37,7 +37,7 @@ class ImageBaseDataset:
     DATASET_URL = {}
     DATASET_MD5 = {}
 
-    def __init__(self, dataset='MMBench', skip_noimg=True):
+    def __init__(self, dataset='MMBench', skip_noimg=True, max_count=None):
         ROOT = LMUDataRoot()
         # You can override this variable to save image files to a different directory
         self.dataset_name = dataset
@@ -73,6 +73,8 @@ class ImageBaseDataset:
         if np.all([istype(x, int) for x in data['index']]):
             data['index'] = [int(x) for x in data['index']]
 
+        if max_count is not None:
+            data = data[:max_count]
         self.data = data
         self.post_build(dataset)
 
