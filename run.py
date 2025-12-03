@@ -61,6 +61,7 @@ def build_model_from_config(cfg, model_name, use_vllm=False):
     if 'class' not in config:
         return supported_VLM[model_name](**config)
     cls_name = config.pop('class')
+
     if hasattr(vlmeval.api, cls_name):
         model = getattr(vlmeval.api, cls_name)(**config)
     elif hasattr(vlmeval.vlm, cls_name):

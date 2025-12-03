@@ -371,10 +371,10 @@ class SmolVLM2(BaseModel):
             raise ValueError(f"Unknown model {model_path}, cannot determine resolution")
 
         self.processor = AutoProcessor.from_pretrained(model_path)
-        self.model = AutoModelForImageTextToText.from_pretrained(
-            model_path,
-            torch_dtype=torch.float32,
-        ).to("cuda")
+        pretrained = AutoModelForImageTextToText.from_pretrained(model_path, torch_dtype=torch.float32, )
+        if torch.cuda.is_available():
+            pretrained = pretrained.to("cuda")
+        self.model = pretrained
 
         kwargs_default = {"max_new_tokens": 2048, "do_sample": False, "use_cache": True}
         kwargs_default.update(kwargs)

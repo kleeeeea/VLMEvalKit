@@ -108,7 +108,11 @@ class ImageBaseDataset:
                 import shutil
                 shutil.move(data_path_legacy, data_path)
             else:
-                download_file(url, data_path)
+                try:
+                    download_file(url, data_path)
+                except Exception as e:
+                    breakpoint()
+                    print()
                 update_flag = True
 
         if file_size(data_path, 'GB') > 1:
